@@ -1,0 +1,32 @@
+version: '3'
+services:
+    messenger:
+        image: "rabbitmq"
+        environment:
+            - RABBITMQ_DEFAULT_USER=user
+            - RABBITMQ_DEFAULT_PASS=pass
+    hooky:
+        build:
+            context: .
+            dockerfile: Dockerfile-hooky
+        image: "hooky"
+        ports:
+            - "8080:80"
+        links:
+            - messenger
+        depends_on:
+            - messenger
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile-worker
+        image: "worker"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        links:
+            - messenger
+        depends_on:
+            - messenger
+        restart: on-failure
+volumes:
+    database-data:

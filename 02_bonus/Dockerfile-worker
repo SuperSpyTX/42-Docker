@@ -1,0 +1,10 @@
+FROM node:latest
+
+COPY worker/ /usr/src/worker/
+
+RUN apt-get update && apt-get install --no-install-recommends ca-certificates git -y && apt-get clean && \
+	cd /usr/src/worker/ && \
+	npm install
+
+WORKDIR /usr/src/worker
+CMD ["node", "app.js"]

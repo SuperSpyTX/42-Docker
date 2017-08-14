@@ -1,0 +1,3 @@
+apt-get update && apt-get upgrade -y
+apt-get install git build-essential -y
+apt-get install clang -y
